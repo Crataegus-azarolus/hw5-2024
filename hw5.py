@@ -12,6 +12,10 @@ class QuestionnaireAnalysis:
 
     def __init__(self, data_fname: Union[pathlib.Path, str]):
         self.data_fname = pathlib.Path(data_fname)
+        
+        filename = pathlib.Path(data_fname)
+        if not filename.exists():
+            raise ValueError("File not found. Cannot proceed.")
                    
     def read_data(self):
         """Reads the json data located in self.data_fname into memory, to
@@ -128,7 +132,7 @@ class QuestionnaireAnalysis:
         
         self.data['score'] = score_column
 
-        self.data['score'] = self.data['score'].round()
+        self.data['score'] = np.floor(self.data['score'])
         self.data['score'] = self.data['score'].astype(pd.UInt8Dtype())
-
+        
         return self.data
